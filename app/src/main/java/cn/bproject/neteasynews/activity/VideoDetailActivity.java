@@ -78,7 +78,7 @@ public class VideoDetailActivity extends BaseActivity implements DefineView {
 
     @Override
     public void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -88,16 +88,16 @@ public class VideoDetailActivity extends BaseActivity implements DefineView {
         }
 
 
-        mRl_video = (RelativeLayout) findViewById(R.id.rl_video);
+        mRl_video = findViewById(R.id.rl_video);
         // 显示缓冲百分比的TextView
-        percentTv = (TextView) findViewById(R.id.buffer_percent);
+        percentTv = findViewById(R.id.buffer_percent);
         //显示下载网速的TextView
-        netSpeedTv = (TextView) findViewById(R.id.net_speed);
-        mVideoView = (VideoView) findViewById(R.id.vitamio);
+        netSpeedTv = findViewById(R.id.net_speed);
+        mVideoView = findViewById(R.id.vitamio);
 
-        video_cover = (ImageView) findViewById(R.id.video_cover);
+        video_cover = findViewById(R.id.video_cover);
 
-        mLoadingPage = (LoadingPage) findViewById(R.id.loading_page);
+        mLoadingPage = findViewById(R.id.loading_page);
 
         video_cover.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +129,7 @@ public class VideoDetailActivity extends BaseActivity implements DefineView {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage(R.string.show_video_without_wifi)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         isShowVideo = true;
 
@@ -138,7 +138,7 @@ public class VideoDetailActivity extends BaseActivity implements DefineView {
                         showVideoPage();
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         isShowVideo = false;
 

@@ -1,6 +1,5 @@
 package cn.bproject.neteasynews.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,8 +57,7 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
     private LinearLayout mPage_content;
     private LoadingPage mLoadingPage;
 
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
+    private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -86,21 +84,21 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
     public void initView() {
         initToolbar();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mPage_content = (LinearLayout) findViewById(R.id.page_content);
-        mLoadingPage = (LoadingPage) findViewById(R.id.loading_page);
-        details_title = (TextView) this.findViewById(R.id.details_title);
+        mPage_content = findViewById(R.id.page_content);
+        mLoadingPage = findViewById(R.id.loading_page);
+        details_title = this.findViewById(R.id.details_title);
         // 设置标题加粗
         TextPaint tp = details_title.getPaint();
         tp.setFakeBoldText(true);
-        details_name = (TextView) this.findViewById(R.id.details_name);
-        details_time = (TextView) this.findViewById(R.id.details_time);
-        mWebView = (WebView) this.findViewById(details_content);
+        details_name = this.findViewById(R.id.details_name);
+        details_time = this.findViewById(R.id.details_time);
+        mWebView = this.findViewById(details_content);
 
         showLoadingPage();
     }
 
     private void initToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

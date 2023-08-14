@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
-    private List<BottomTab> mBottomTabs = new ArrayList<>(5);
+    private final List<BottomTab> mBottomTabs = new ArrayList<>(5);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +62,14 @@ public class MainActivity extends AppCompatActivity {
         // 视频标签
         BottomTab bottomTab_video = new BottomTab(VideoFragment.class,R.string.video_fragment,R.drawable.select_icon_video);
 
-
-
         mBottomTabs.add(bottomTab_news);
         mBottomTabs.add(bottomTab_photo);
         mBottomTabs.add(bottomTab_video);
-//        mBottomTabs.add(bottomTab_about);
 
 
         // 设置FragmentTab
         mInflater = LayoutInflater.from(this);
-        mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        mTabHost = findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
 
@@ -104,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
     private View buildIndicator(BottomTab bottomTab){
 
         View view = mInflater.inflate(R.layout.tab_indicator, null);
-        ImageView img = (ImageView) view.findViewById(R.id.icon_tab);
-        TextView text = (TextView) view.findViewById(R.id.txt_indicator);
+        ImageView img = view.findViewById(R.id.icon_tab);
+        TextView text = view.findViewById(R.id.txt_indicator);
 
         img.setBackgroundResource(bottomTab.getIcon());
         text.setText(bottomTab.getTitle());
