@@ -1,5 +1,6 @@
 package cn.bproject.neteasynews.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -57,6 +58,7 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
     private LinearLayout mPage_content;
     private LoadingPage mLoadingPage;
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

@@ -16,7 +16,6 @@ import java.util.List;
 import cn.bproject.neteasynews.R;
 import cn.bproject.neteasynews.Utils.LogUtils;
 import cn.bproject.neteasynews.bean.BottomTab;
-import cn.bproject.neteasynews.fragment.AboutFragment;
 import cn.bproject.neteasynews.fragment.NewsFragment;
 import cn.bproject.neteasynews.fragment.PhotoFragment;
 import cn.bproject.neteasynews.fragment.VideoFragment;
@@ -48,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
         // 视频标签
         BottomTab bottomTab_video = new BottomTab(VideoFragment.class,R.string.video_fragment,R.drawable.select_icon_video);
         // 我 标签
-        BottomTab bottomTab_about = new BottomTab(AboutFragment.class,R.string.about_fragment,R.drawable.select_icon_about);
+//        BottomTab bottomTab_about = new BottomTab(AboutFragment.class,R.string.about_fragment,R.drawable.select_icon_about);
 
 
         mBottomTabs.add(bottomTab_news);
         mBottomTabs.add(bottomTab_photo);
         mBottomTabs.add(bottomTab_video);
-        mBottomTabs.add(bottomTab_about);
+//        mBottomTabs.add(bottomTab_about);
 
 
         // 设置FragmentTab

@@ -35,8 +35,6 @@
             android:name=".activity.PicDetailActivity"
             android:process=":vitamio" />
         <activity android:name=".activity.VideoDetailActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.FeedbackActivity" />
         <activity android:name=".webview.WebViewActivity" />
         <activity android:name=".activity.PhotoActivity" />
         <activity android:name=".activity.ChannelManagerActivity" />

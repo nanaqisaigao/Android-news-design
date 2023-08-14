@@ -25,7 +25,9 @@ import cn.bproject.neteasynews.Utils.ListDataSave;
 /**
  * Created by Administrator on 2017/2/7.
  */
-
+//用于实现一个关于页面的功能，它继承自BaseActivity类，
+// 并实现了View.OnClickListener接口以处理点击事件。
+// 主要功能是显示关于应用的信息，包括版本号、更新说明和跳转到指定的链接。
 public class ChannelManagerActivity extends BaseActivity implements ChannelAdapter.ChannelItemClickListener{
 
     private RecyclerView mRecyclerView;
