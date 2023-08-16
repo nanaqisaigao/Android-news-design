@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--    总的来说，这段XML布局文件描述了一个底部标签栏导航的界面布局，底部标签栏位于底部，
+上方是一个FrameLayout，用于展示各个标签对应的Fragment内容。这种布局方式使得底部标签栏和内容区域能够共享屏幕高度。-->
+
+<!--    LinearLayout 标签：这是根布局，设置了布局的宽度和高度都为match_parent，使其填满父容器。
+android:orientation="vertical"表示子视图按垂直方向排列。-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,8 +12,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="cn.bproject.neteasynews.activity.MainActivity">
+    <!-- FrameLayout 标签：这个FrameLayout用于承载Fragment的内容。它的宽度设置为fill_parent，高度设置为0dip并使用权重分配空间。
+    这样设置可以让底部标签栏上面的内容占据剩余的空间，使得底部标签栏和内容能够平分屏幕高度。
 
-
+    FrameLayout(帧布局)
+    在屏幕上开辟出一块空白的区域,当我们往里面添加控件的时候,会默认把他们放到这块区域的左上角,
+    而这种布局方式却没有任何的定位方式
+    -->
+<!--    真正的内容视图,用于展示Fragment-->
     <FrameLayout
         android:id="@+id/realtabcontent"
         android:layout_width="fill_parent"
@@ -16,13 +27,15 @@
         android:layout_weight="1"
         android:background="@color/bg_color"
         />
-
+    <!--    cn.bproject.neteasynews.widget.FragmentTabHost 标签：这是自定义的FragmentTabHost组件，
+     用于实现底部标签栏。它的宽度设置为fill_parent，高度设置为wrap_content，背景颜色为白色。-->
     <cn.bproject.neteasynews.widget.FragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
-
+        <!--    嵌套的 FrameLayout 标签：在FragmentTabHost中有一个嵌套的FrameLayout，
+        用于承载各个标签对应的Fragment内容，它的宽度和高度都设置为0dp并使用权重分配空间。-->
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="0dp"

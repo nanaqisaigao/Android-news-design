@@ -35,7 +35,6 @@ import cn.bproject.neteasynews.fragment.news.NewsListFragment;
 import static cn.bproject.neteasynews.R.id.tab_layout;
 
 /**
- * Created by Administrator on 2016/12/24.
  * 新闻模块
  */
 
@@ -59,8 +58,10 @@ public class NewsFragment extends BaseFragment {
     private BaseFragment baseFragment;
 
 
+
     @Nullable
     @Override
+//    在片段被创建时调用，用于加载片段的布局。在这里，使用布局文件tablayout_pager.xml来创建视图。
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tablayout_pager, container, false);
 
@@ -76,9 +77,9 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        mTabLayout = (TabLayout) mView.findViewById(tab_layout);
-        mNewsViewpager = (ViewPager) mView.findViewById(R.id.news_viewpager);
-        mChange_channel = (ImageButton) mView.findViewById(R.id.change_channel);
+        mTabLayout = mView.findViewById(tab_layout);
+        mNewsViewpager = mView.findViewById(R.id.news_viewpager);
+        mChange_channel = mView.findViewById(R.id.change_channel);
 
         Toolbar myToolbar = initToolbar(mView, R.id.my_toolbar, R.id.toolbar_title, R.string.news_home);
         initValidata();
