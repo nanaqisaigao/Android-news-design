@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         mBottomTabs.add(bottomTab_video);
 
 
-        // 设置FragmentTab
+        // 初始化mTabHost
 
         //LayoutInflacter用法  1.获取LayoutInflater实例
         mInflater = LayoutInflater.from(this);
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // FragmentManager 类负责在应用的 fragment 上执行一些操作，如添加、移除或替换操作，以及将操作添加到返回堆栈。
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
-        //FragmentTab获取内容
+        //mTabHost获取内容和标签
 
 //       将每个BottomTab对象转换为TabHost.TabSpec并添加到mTabHost（一个FragmentTabHost实例）
         for (BottomTab bottomTab : mBottomTabs){
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //buildIndicator方法：用于构建底部标签的视图，从tab_indicator.xml布局文件中加载视图，设置图标和文本，然后返回构建好的视图。
 
-    // 设置底部tab的图片和文字
+    // 设置底部tab的图片和文字    Indicator：标志
     private View buildIndicator(BottomTab bottomTab){
 
         View view = mInflater.inflate(R.layout.tab_indicator, null);
@@ -127,15 +127,22 @@ public class MainActivity extends AppCompatActivity {
         return  view;
     }
 
+
+    //Intent双向传值，这里根据返回的结果码和附加数据，接收值，用来切换新闻模块的频道
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //获取当前所显示的选项卡的标签。
         String tag =  mTabHost.getCurrentTabTag();
         if (resultCode == 789){
             Bundle bundle = data.getExtras();
+            //从附加数据中获取名为 "NewTabPostion" 的整数数据，这表示新的选项卡位置。
             int tabPosition = bundle.getInt("NewTabPostion");
+            //通过标签找到当前显示的 NewsFragment 片段。
             NewsFragment newsFragment = (NewsFragment) getSupportFragmentManager().findFragmentByTag(tag);
+            //将新的选项卡位置传递给它，以便它可以切换到相应的频道。
             newsFragment.setCurrentChannel(tabPosition);
+            //使片段可以更新其内容以反映新的频道配置。
             newsFragment.notifyChannelChange();
         }
     }
