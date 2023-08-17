@@ -42,7 +42,7 @@ import cn.bproject.neteasynews.widget.LoadMoreFooterView;
 import cn.bproject.neteasynews.widget.LoadingPage;
 
 /**
- * Created by Bei on 2016/12/25.
+ *
  */
 
 public class NewsListFragment extends BaseFragment {

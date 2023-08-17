@@ -42,7 +42,7 @@ public class NewsFragment extends BaseFragment {
 
     private final String TAG = NewsFragment.class.getSimpleName();
 
-    private TabLayout mTabLayout;//于显示标签，切换不同的新闻频道
+    private TabLayout mTabLayout;//显示标签，切换不同的新闻频道
     private ViewPager mNewsViewpager;//显示不同频道对应的内容页面
     private View mView;//Fragment 的根视图
     private FixedPagerAdapter fixedPagerAdapter;//ViewPager 的适配器，用于管理不同频道的内容 Fragment
@@ -64,7 +64,6 @@ public class NewsFragment extends BaseFragment {
     //LayoutInflater inflater：用于从布局资源文件创建视图的工具。
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tablayout_pager, container, false);
-
         return mView;
     }
 
@@ -83,45 +82,50 @@ public class NewsFragment extends BaseFragment {
         mChange_channel = mView.findViewById(R.id.change_channel);//改变频道
 
         Toolbar myToolbar = initToolbar(mView, R.id.my_toolbar, R.id.toolbar_title, R.string.news_home);
+        //初始化，设置 TabLayout 和 ViewPager 的关联，并绑定数据
         initValidata();
+        //点击标签，更换频道内容
         initListener();
     }
 
     @Override
-    //
+    //于初始化一些数据和实例，设置 TabLayout 和 ViewPager 的关联，并绑定数据
     public void initValidata() {
+        //只有当前应用可以访问，获取的Setting共选项
         sharedPreferences = getActivity().getSharedPreferences("Setting", Context.MODE_PRIVATE);
+        //保存频道数据为Json，取名为channel
         listDataSave = new ListDataSave(getActivity(), "channel");
+        //用于存储各个频道对应的内容片段
         fragments = new ArrayList<BaseFragment>();
+        //管理 ViewPager 中的内容的适配器
         fixedPagerAdapter = new FixedPagerAdapter(getChildFragmentManager());
-
+        //将 TabLayout 与 ViewPager 进行关联，实现选项卡与页面内容的同步切换。
         mTabLayout.setupWithViewPager(mNewsViewpager);
+        //将数据绑定到 ViewPager 和适配器上，实现不同频道内容的显示
         bindData();
     }
 
     @Override
+    //点击标签，更换频道内容
     public void initListener() {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabPosition = tab.getPosition();
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
+        //切换频道
         mChange_channel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChannelManagerActivity.class);
+                //传递的数据为当前频道位置
                 intent.putExtra("TABPOSITION", tabPosition);
                 startActivityForResult(intent, 999);
             }
@@ -130,7 +134,9 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     public void bindData() {
+        //获取频道
         getDataFromSharedPreference();
+
         fixedPagerAdapter.setChannelBean(myChannelList);
         fixedPagerAdapter.setFragments(fragments);
         mNewsViewpager.setAdapter(fixedPagerAdapter);

@@ -13,7 +13,7 @@ import cn.bproject.neteasynews.Utils.PrefUtils;
 import cn.bproject.neteasynews.common.DefineView;
 
 /**
- * Created by Bei on 2016/12/24.
+ *共有的Fragment
  */
 
 public abstract class BaseFragment extends Fragment implements DefineView {
