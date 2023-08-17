@@ -15,7 +15,7 @@ import java.util.List;
 import cn.bproject.neteasynews.fragment.BaseFragment;
 
 /**
- * Created by Bei on 2016/12/25.
+ *
  */
 
 public class FixedPagerAdapter extends FragmentStatePagerAdapter {

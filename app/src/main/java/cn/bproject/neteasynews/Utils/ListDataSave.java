@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/1/20.
  * 将List集合转为json数据保存在sharedPreferences的工具类
  */
 

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+ <!--   merge并不是一个ViewGroup，也不是一个View，它相当于声明了一些视图，等待被添加。
+    merge标签被添加到A容器下，那么merge下的所有视图将被添加到A容器下-->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 

@@ -1,7 +1,6 @@
 package com.example.channelmanager;
 
 /**
- * Created by Administrator on 2017/2/7.
  * 频道列表
  */
 

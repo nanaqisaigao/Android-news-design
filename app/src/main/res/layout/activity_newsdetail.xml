@@ -48,9 +48,9 @@
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="我是大名鼎鼎的文章标题哟"
+                android:text="这是标题"
                 android:textColor="@color/black"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"

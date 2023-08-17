@@ -42,26 +42,26 @@ public class NewsFragment extends BaseFragment {
 
     private final String TAG = NewsFragment.class.getSimpleName();
 
-    private TabLayout mTabLayout;
-    private ViewPager mNewsViewpager;
-    private View mView;
-    private FixedPagerAdapter fixedPagerAdapter;
-    private List<BaseFragment> fragments;
-    private List<ProjectChannelBean> myChannelList;
-    private List<ProjectChannelBean> moreChannelList;
-    private ImageButton mChange_channel;
-    // 当前新闻频道的位置
-    private int tabPosition;
-    private SharedPreferences sharedPreferences;
-    private ListDataSave listDataSave;
-    private boolean isFirst;
-    private BaseFragment baseFragment;
+    private TabLayout mTabLayout;//于显示标签，切换不同的新闻频道
+    private ViewPager mNewsViewpager;//显示不同频道对应的内容页面
+    private View mView;//Fragment 的根视图
+    private FixedPagerAdapter fixedPagerAdapter;//ViewPager 的适配器，用于管理不同频道的内容 Fragment
+    private List<BaseFragment> fragments;//存储各个频道对应的内容 Fragment
+    private List<ProjectChannelBean> myChannelList;//用户设置的新闻频道列表
+    private List<ProjectChannelBean> moreChannelList;//更多的新闻频道列表
+    private ImageButton mChange_channel;//切换频道的按钮。
+    private int tabPosition;// 当前新闻频道的位置
+    private SharedPreferences sharedPreferences;//用于存储应用设置信息。
+    private ListDataSave listDataSave;//保存频道数据的工具类。  将List集合转为json数据保存在sharedPreferences的工具类
+    private boolean isFirst;//标记是否为第一次进入应用。
+    private BaseFragment baseFragment;//用于存储创建的 Fragment 对象。
 
 
 
     @Nullable
     @Override
-//    在片段被创建时调用，用于加载片段的布局。在这里，使用布局文件tablayout_pager.xml来创建视图。
+//    在片段被创建时调用，加载片段的布局。使用布局文件tablayout_pager.xml来创建视图。
+    //LayoutInflater inflater：用于从布局资源文件创建视图的工具。
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tablayout_pager, container, false);
 
@@ -69,6 +69,7 @@ public class NewsFragment extends BaseFragment {
     }
 
     @Override
+    //初始化视图中的各个控件和数据
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
@@ -77,9 +78,9 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        mTabLayout = mView.findViewById(tab_layout);
-        mNewsViewpager = mView.findViewById(R.id.news_viewpager);
-        mChange_channel = mView.findViewById(R.id.change_channel);
+        mTabLayout = mView.findViewById(tab_layout);//新闻标签
+        mNewsViewpager = mView.findViewById(R.id.news_viewpager);//新闻内容
+        mChange_channel = mView.findViewById(R.id.change_channel);//改变频道
 
         Toolbar myToolbar = initToolbar(mView, R.id.my_toolbar, R.id.toolbar_title, R.string.news_home);
         initValidata();
@@ -87,6 +88,7 @@ public class NewsFragment extends BaseFragment {
     }
 
     @Override
+    //
     public void initValidata() {
         sharedPreferences = getActivity().getSharedPreferences("Setting", Context.MODE_PRIVATE);
         listDataSave = new ListDataSave(getActivity(), "channel");
