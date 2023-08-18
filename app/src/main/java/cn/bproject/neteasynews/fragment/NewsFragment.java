@@ -134,11 +134,13 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     public void bindData() {
-        //获取频道
+        //获取所有频道
         getDataFromSharedPreference();
-
+        //存储频道列表
         fixedPagerAdapter.setChannelBean(myChannelList);
+        //存储各个频道内容
         fixedPagerAdapter.setFragments(fragments);
+        //连接后端数据和前端显示的适配器接口  给文章的显示设置适配器
         mNewsViewpager.setAdapter(fixedPagerAdapter);
     }
 
@@ -150,24 +152,32 @@ public class NewsFragment extends BaseFragment {
     private void getDataFromSharedPreference() {
         isFirst = sharedPreferences.getBoolean("isFirst", true);
         if (isFirst) {
+            //获取频道数据列表。
             myChannelList = CategoryDataUtils.getChannelCategoryBeans();
+            //获取更多频道数据。
             moreChannelList = getMoreChannelFromAsset();
+            //设置频道数据的类型。
             myChannelList = setType(myChannelList);
             moreChannelList = setType(moreChannelList);
+            //将设置好的频道数据保存到共享偏好设置中，并将 "isFirst" 设置为 false。
             listDataSave.setDataList("myChannel", myChannelList);
             listDataSave.setDataList("moreChannel", moreChannelList);
             SharedPreferences.Editor edit = sharedPreferences.edit();
             edit.putBoolean("isFirst", false);
             edit.commit();
         } else {
+            //不是第一次进入程序,从共享偏好设置中获取之前保存的频道数据列表。
             myChannelList = listDataSave.getDataList("myChannel", ProjectChannelBean.class);
         }
+        //清空 fragments 列表，用于重新填充内容片段列表
         fragments.clear();
+        //为每个频道创建对应的内容片段，并将内容片段添加到 fragments 列表中。
         for (int i = 0; i < myChannelList.size(); i++) {
             baseFragment = NewsListFragment.newInstance(myChannelList.get(i).getTid());
-
             fragments.add(baseFragment);
         }
+        //根据 myChannelList 的大小判断是否启用 TabLayout 的固定模式（TabLayout.MODE_FIXED）
+        // 或滚动模式（TabLayout.MODE_SCROLLABLE）。
         if (myChannelList.size() <= 4) {
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
         } else {
