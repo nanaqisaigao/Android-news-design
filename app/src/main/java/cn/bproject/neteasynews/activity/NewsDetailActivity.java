@@ -38,12 +38,14 @@ import cn.bproject.neteasynews.widget.LoadingPage;
 import static cn.bproject.neteasynews.R.id.details_content;
 
 /**
- * Created by liaozhoubei on 2016/12/28.
+ *显示新闻详情的活动
  */
 
 public class NewsDetailActivity extends BaseActivity implements DefineView {
     private final String TAG = NewsDetailActivity.class.getSimpleName();
+//    显示新闻标题、作者和发布时间
     private TextView details_title, details_name, details_time;
+
     private Context mContext;
     private WebView mWebView;
     private ThreadManager.ThreadPool mThreadPool;   // 线程池

@@ -42,7 +42,7 @@ import cn.bproject.neteasynews.widget.LoadMoreFooterView;
 import cn.bproject.neteasynews.widget.LoadingPage;
 
 /**
- *
+ 处理数据的加载、刷新和展示，通过网络请求获取新闻数据，并在适当的时候展示不同状态下的页面。
  */
 
 public class NewsListFragment extends BaseFragment {
@@ -68,6 +68,7 @@ public class NewsListFragment extends BaseFragment {
 
     private boolean isConnectState = false;  // 判断当前是否在联网刷新, false表示当前没有联网刷新
 
+    //Handler处理器：处理不同消息，包括展示新闻、错误信息、下拉刷新加载更多等操作。
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--外层的 ScrollView 元素用于支持滚动，以便在内容过长时进行滚动查看。
+    AppBarLayout 实现了一个折叠的应用程序栏
+    CoordinatorLayout 可以协调各个子视图
+    webview通过加载html文件来展示新闻具体内容
+    Loading_page 是自定义的加载新闻内容布局-->
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,21 +22,24 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    android:elevation="4dp"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
             </android.support.design.widget.AppBarLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_anchor="@+id/appBarLayout"
+                app:layout_anchorGravity="center"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.CoordinatorLayout>
 
         <LinearLayout
@@ -85,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:scrollbars="none"/>
+                android:scrollbars="none" />
         </LinearLayout>
 
         <cn.bproject.neteasynews.widget.LoadingPage
