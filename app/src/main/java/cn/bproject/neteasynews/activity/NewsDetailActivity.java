@@ -43,22 +43,26 @@ import static cn.bproject.neteasynews.R.id.details_content;
 
 public class NewsDetailActivity extends BaseActivity implements DefineView {
     private final String TAG = NewsDetailActivity.class.getSimpleName();
-//    显示新闻标题、作者和发布时间
+    //    显示新闻标题、作者和发布时间
     private TextView details_title, details_name, details_time;
-
+    //上下文    通过servlet绑定数据使用 作为中间的通道让Servlet 和Web容器进行交互
     private Context mContext;
+    //用于显示新闻内容 WebView 类是 Android 的 View 类的扩展，让网页显示为 Activity 布局的一部分
     private WebView mWebView;
     private ThreadManager.ThreadPool mThreadPool;   // 线程池
-
+    //WebView的配置。
     private WebSettings mWebSettings;
-
+    //存储偏好设置
     private SharedPreferences sharedPreferences;
-
+    //新闻的唯一ID。
     private String mDocid;
+    //存储获取的新闻详情数据。
     private NewsDetailBean mNewsDetailBeen;
+    //包裹内容的布局
     private LinearLayout mPage_content;
+//    加载页面部件
     private LoadingPage mLoadingPage;
-
+    //处理UI更新
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,6 +72,7 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
         }
     };
 
+    //在活动创建时调用，初始化视图、数据和监听器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

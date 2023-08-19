@@ -218,7 +218,6 @@ public class NewsFragment extends BaseFragment {
 
     /**
      * 从Asset目录中读取更多频道
-     *
      * @return
      */
     public List<ProjectChannelBean> getMoreChannelFromAsset() {
