@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import cn.bproject.neteasynews.R;
 import cn.bproject.neteasynews.bean.VideoBean;
 
-/**
- * Created by liaozhoubei on 2017/1/7.
- */
+
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.ViewHolder> {
 

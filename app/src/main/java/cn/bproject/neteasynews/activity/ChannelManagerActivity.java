@@ -22,9 +22,7 @@ import java.util.List;
 import cn.bproject.neteasynews.R;
 import cn.bproject.neteasynews.Utils.ListDataSave;
 
-/**
- *
- */
+
 public class ChannelManagerActivity extends BaseActivity implements ChannelAdapter.ChannelItemClickListener{
 
     private RecyclerView mRecyclerView;

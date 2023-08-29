@@ -47,7 +47,7 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
     private TextView details_title, details_name, details_time;
     //上下文    通过servlet绑定数据使用 作为中间的通道让Servlet 和Web容器进行交互
     private Context mContext;
-    //用于显示新闻内容 WebView 类是 Android 的 View 类的扩展，让网页显示为 Activity 布局的一部分
+    //用于显示新闻内容    WebView 类是 Android 的 View 类的扩展，让网页显示为 Activity 布局的一部分
     private WebView mWebView;
     private ThreadManager.ThreadPool mThreadPool;   // 线程池
     //WebView的配置。
@@ -62,12 +62,14 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
     private LinearLayout mPage_content;
 //    加载页面部件
     private LoadingPage mLoadingPage;
-    //处理UI更新
+    //处理UI更新  Handler 主要用于在后台线程中与UI线程进行通信，以便在UI线程上执行一些任务。
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            //绑定数据到UI元素上
             bindData();
+            //显示新闻页面
             showNewsPage();
         }
     };
@@ -86,7 +88,7 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
     }
 
 
-
+    //初始化视图，包括设置Toolbar、获取相关视图和部件，展示加载页面
     @Override
     public void initView() {
         initToolbar();
@@ -103,7 +105,7 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
 
         showLoadingPage();
     }
-
+    //初始化工具栏，包括设置工具栏的标题和返回按钮。
     private void initToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -114,6 +116,8 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
         }
     }
 
+
+    //初始化数据，设置WebView的配置，添加Javascript接口对象，发起网络请求获取新闻详情。
     @Override
     public void initValidata() {
         setWebView();
@@ -121,9 +125,9 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
         mWebView.addJavascriptInterface(new JavaScriptInterface(), "androidMethod");
         requestData();
     }
-
     /**
      * 设置WebView相关配置
+     * 包括自适应屏幕、支持缩放和JavaScript等
      */
     private void setWebView(){
         mWebSettings = mWebView.getSettings();
@@ -148,16 +152,20 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
         mWebView.setWebChromeClient(new MyWebChromeClient());
         mWebView.setWebViewClient(new MyWebViewClient());
     }
-
+    //发起网络请求，获取新闻详情数据。
     private void requestData(){
-        // 创建线程池
+        // 创建线程池,用于执行网络请求的任务
         mThreadPool = ThreadManager.getThreadPool();
         mThreadPool.execute(new Runnable() {
             @Override
             public void run() {
+                //通过拼接 mDocid 到请求URL中，构建了获取新闻详情的完整URL地址 url
                 String url = Api.DetailUrl + mDocid + Api.endDetailUrl;
                 Log.d(TAG, "文章url为: " + url);
+                //发起HTTP GET请求，该请求会异步执行
                 HttpHelper.get(url, new HttpCallbackListener() {
+                    //在请求的回调函数中，如果请求成功（onSuccess 方法），则会解析获取到的结果字符串 result，
+                    // 并将解析后的数据存储到 mNewsDetailBeen 对象中。
                     @Override
                     public void onSuccess(String result) {
                         mNewsDetailBeen = DataParse.NewsDetail(result, mDocid);
@@ -218,10 +226,13 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
 
     @Override
     public void bindData() {
+        //数据获取成功后
         if (mNewsDetailBeen != null) {
+            //对新闻详情进行处理
             changeNewsDetail(mNewsDetailBeen);
             String body = mNewsDetailBeen.getBody();
             // 使用css样式的方式设置图片大小
+            //用于设置图片的大小、页边距和字体大小等。这样可以确保新闻详情在 WebView 中以可读的方式显示
             String css = "<style type=\"text/css\"> img {" +
                     "width:100%;" +
                     "height:auto;" +
@@ -243,6 +254,8 @@ public class NewsDetailActivity extends BaseActivity implements DefineView {
             details_name.setText(source);
             details_time.setText(ptime);
             //details_content.loadData(articleBean.getContext(),"text/html","UTF-8");
+
+            //加载 HTML 内容到 WebView 中，以便显示新闻详情的正文内容。
             mWebView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", "");
         } else{
             showEmptyPage();

@@ -1,7 +1,6 @@
 package cn.bproject.neteasynews.common;
 
 /**
- * Created by Administrator on 2016/12/26.
  * 抓取网易新闻api
  *
  * URL 示例：

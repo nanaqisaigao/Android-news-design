@@ -3,7 +3,6 @@ package cn.bproject.neteasynews.bean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/12/26.
  *
  * 先获得文字的docid，然后通过json解析，获取jsonObject，转化为String，在通过Gson解析
  * 示例：

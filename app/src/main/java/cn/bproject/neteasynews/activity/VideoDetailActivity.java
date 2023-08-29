@@ -34,10 +34,6 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
 
-/**
- * Created by liaozhoubei on 2017/1/3.
- */
-
 public class VideoDetailActivity extends BaseActivity implements DefineView {
     private final String TAG = VideoFragment.class.getSimpleName();
 

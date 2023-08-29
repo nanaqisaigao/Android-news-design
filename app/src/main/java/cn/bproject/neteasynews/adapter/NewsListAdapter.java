@@ -16,9 +16,6 @@ import java.util.List;
 import cn.bproject.neteasynews.R;
 import cn.bproject.neteasynews.bean.NewsListNormalBean;
 
-/**
- * Created by liaozhoubei on 2017/1/9.
- */
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.BaseViewHolder> {
     private final String TAG = NewsListAdapter.class.getSimpleName();
