@@ -47,16 +47,18 @@ import cn.bproject.neteasynews.widget.LoadingPage;
 
 public class NewsListFragment extends BaseFragment {
 
+    //表示NewsListFragment类的简单名称的常量字符串。通常用于日志记录和调试。
     private final String TAG = NewsListFragment.class.getSimpleName();
-    private static final String KEY = "TID";
+    private static final String KEY = "TID";    //线程值，用作在片段或活动之间传递数据的键
     private String mUrl;        // 请求网络的url
-    private String tid; // 栏目频道id
+    private String tid;  // 表示频道或类别的ID。
 
     private View mView;     // 布局视图
-    private IRecyclerView mIRecyclerView;
-    private LoadMoreFooterView mLoadMoreFooterView;
-    private NewsListAdapter mNewsListAdapter;
-    private LoadingPage mLoadingPage;
+//    用于处理新闻列表的关键 UI 组件，它与适配器一起负责展示新闻数据并允许用户滚动和查看更多内容
+    private IRecyclerView mIRecyclerView; //用于显示大量数据的 Android UI 组件，特别适用于需要滚动的列表和网格布局
+    private LoadMoreFooterView mLoadMoreFooterView;//用于指示滚动时加载更多内容的视图。
+    private NewsListAdapter mNewsListAdapter;//用于将数据填充到mIRecyclerView中的适配器
+    private LoadingPage mLoadingPage;//负责显示加载、空白和错误状态的视图或组件。
 
     private List<NewsListNormalBean> mNewsListNormalBeanList;   // 启动时获得的数据
     private List<NewsListNormalBean> newlist;   // 上拉刷新后获得的数据
@@ -68,7 +70,8 @@ public class NewsListFragment extends BaseFragment {
 
     private boolean isConnectState = false;  // 判断当前是否在联网刷新, false表示当前没有联网刷新
 
-    //Handler处理器：处理不同消息，包括展示新闻、错误信息、下拉刷新加载更多等操作。
+    //Handler 负责根据接收到的消息类型来更新UI。
+    // 处理不同消息，包括展示新闻、错误信息、下拉刷新加载更多等操作。
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -77,8 +80,8 @@ public class NewsListFragment extends BaseFragment {
             String error;
             switch (what) {
                 case HANDLER_SHOW_NEWS:
-                    bindData();
-                    showNewsPage();
+                    bindData();         //填充UI中的新闻数据
+                    showNewsPage();     //显示新闻页面
                     break;
                 case HANDLER_SHOW_ERROR:
                     error = (String) message.obj;
@@ -107,12 +110,7 @@ public class NewsListFragment extends BaseFragment {
     });
 
 
-    /**
-     * 从外部往Fragment中传参数的方法
-     *
-     * @param tid 频道id
-     * @return
-     */
+//从外部往Fragment中传参数的方法   将数据传递给新的 Fragment 实例
     public static NewsListFragment newInstance(String tid) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY, tid);
@@ -124,7 +122,7 @@ public class NewsListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        //初始化布局，初始化视图、加载数据、设置监听器
         mView = inflater.inflate(R.layout.fragment_news_list, container, false);
         initView();
         initValidata();
@@ -136,26 +134,33 @@ public class NewsListFragment extends BaseFragment {
 
     @Override
     public void initView() {
+        //获取布局元素引用
         mLoadingPage = (LoadingPage) mView.findViewById(R.id.loading_page);
         mIRecyclerView = (IRecyclerView) mView.findViewById(R.id.iRecyclerView);
 
+        //设置 RecyclerView 的布局管理器为 LinearLayoutManager，这表示列表项将按线性方式排列
         mIRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //添加一个分割线，在列表项之间添加分隔线
         mIRecyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity()));
+
+        //在用户下拉列表时显示
         mLoadMoreFooterView = (LoadMoreFooterView) mIRecyclerView.getLoadMoreFooterView();
         ClassicRefreshHeaderView classicRefreshHeaderView = new ClassicRefreshHeaderView(getActivity());
         classicRefreshHeaderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtils.dip2px(getActivity(), 80)));
-        // we can set view
+        //设置了这个自定义的下拉刷新头部视图到 mIRecyclerView 中，以便下拉列表时，可以被正确地显示
         mIRecyclerView.setRefreshHeaderView(classicRefreshHeaderView);
+
+        //展示加载页面的内容
         showLoadingPage();
     }
 
     @Override
     public void initValidata() {
-        if (getArguments() != null) {
+        if (getArguments() != null) {//取得是bundle里封装的tid
             //取出保存的频道TID
             tid = getArguments().getString("TID");
         }
-        // 创建线程池
+        // 创建线程池 用于管理和执行后续的网络请求和数据处理任务
         mThreadPool = ThreadManager.getThreadPool();
 
         mUrl = Api.CommonUrl + tid + "/" + mStartIndex + Api.endUrl;
@@ -167,6 +172,7 @@ public class NewsListFragment extends BaseFragment {
      * 从缓存中读取并解析显示数据
      */
     private void getNewsFromCache() {
+        //它在一个新的线程中执行操作，以避免在主线程中进行耗时的文件读取操作。
         mThreadPool.execute(new Runnable() {
             @Override
             public void run() {

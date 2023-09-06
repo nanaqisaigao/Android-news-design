@@ -5,9 +5,7 @@ import android.widget.Toast;
 
 import cn.bproject.neteasynews.MyApplication;
 
-/**
- * Created by Administrator on 2017/2/20.
- */
+
 
 public class ToastUtils {
     public static void showLong(String value){

@@ -14,7 +14,7 @@ import java.io.IOException;
 import cn.bproject.neteasynews.Utils.ThreadManager;
 
 /**
- * Created by Bei on 2016/12/24.
+ *
  */
 
 public class MyApplication extends Application {

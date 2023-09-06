@@ -2,7 +2,6 @@ package cn.bproject.neteasynews.common;
 
 /**
  * 抓取网易新闻api
- *
  * URL 示例：
  * 栏目列表：
  * http://c.m.163.com/nc/topicset/android/subscribe/manage/listspecial.html
@@ -11,40 +10,36 @@ package cn.bproject.neteasynews.common;
 **/
 
 public class Api {
-
-
-
     public static final String host = "http://c.m.163.com/";
-
     // 普通栏目前缀, 示例： http://c.m.163.com/nc/article/list/T1467284926140/0-20.html
     public static final String CommonUrl = host + "nc/article/list/";
-
     // 图片栏目的前缀， 示例： http://pic.news.163.com/photocenter/api/list/0031/6LRK0031,6LRI0031/0/20.json
     // 推荐图片：0031， 新闻图片： 0001 ， 明星图片：0003
     public static final String PictureUrl = "http://pic.news.163.com/photocenter/api/list/";
-
     // 特殊频道前缀：热点、网易号适用
     public static final String SpecialColumn1 = "recommend/getSubDocPic?";
-
     // 特殊频道前缀:	视频/段子、美女、萌宠适用
     public static final String SpecialColumn2 = "recommend/getChanListNews?channel=";
     // 文章详情前缀
     public static final String DetailUrl = host + "nc/article/";
 
+
+
     // 普通新闻栏目的结尾，注意要在前面添加新闻从那一条开始获取
     // 如 ：http://c.m.163.com/nc/article/list/T1467284926140/0-20.html，获取最新的20条新闻
     // http://c.m.163.com/nc/article/list/T1467284926140/20-20.html，获取从第20条开始的后面20条新闻
     public static final String endUrl = "-20.html";
-
     // 所有特殊频道的结尾，如：热点、网易号、段子、美女、萌宠
     public static final String SpecialendUrl = "&size=10&offset=";
-
     /**
      * 新闻文章详情页链接尾部
      * 示例：http://c.m.163.com/nc/article/C8T2G5QL0511A99L/full.html
      * 其中postId ：C8T2G5QL0511A99L
      */
     public static final String endDetailUrl = "/full.html";
+
+
+
 
     /**
      * 图片新闻详情页连接
@@ -54,7 +49,6 @@ public class Api {
     public static final String PictureDetailUrl = host + "photo/api/set/";
     // 图片新闻详情页结尾
     public static final String endPictureDetailUrl = ".json";
-
 
     /**
      * 视频详情链接
