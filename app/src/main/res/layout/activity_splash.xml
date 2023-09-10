@@ -4,15 +4,16 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#FFFFFF"
     android:gravity="center"
-    android:background="#48a1ef"
+    android:orientation="vertical"
     tools:context="cn.bproject.neteasynews.activity.SplashActivity">
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:src="@mipmap/second_logo"/>
+        android:layout_width="200dp"
+        android:layout_height="173dp"
+        android:src="@mipmap/wkd" />
+    <!--        android:src="@mipmap/second_logo"/>-->
 
 
 </LinearLayout>
