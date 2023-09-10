@@ -18,7 +18,6 @@ import java.io.OutputStream;
 import static cn.bproject.neteasynews.Utils.MD5Encoder.hashKeyForDisk;
 
 /**
- * Created by Administrator on 2016/12/8.
  * 设置本地缓存
  */
 

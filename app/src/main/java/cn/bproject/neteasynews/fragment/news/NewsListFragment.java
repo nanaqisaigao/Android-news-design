@@ -162,9 +162,9 @@ public class NewsListFragment extends BaseFragment {
         }
         // 创建线程池 用于管理和执行后续的网络请求和数据处理任务
         mThreadPool = ThreadManager.getThreadPool();
-
+        //包括了基础的API地址、频道ID、起始索引和其他参数,用于后续的网络请求，以获取新闻数据
         mUrl = Api.CommonUrl + tid + "/" + mStartIndex + Api.endUrl;
-
+        //从本地缓存中获取新闻数据 ，如果已经有缓存的数据可用，可以在显示新闻列表之前尝试展示缓存的数据
         getNewsFromCache();
     }
 
@@ -176,19 +176,25 @@ public class NewsListFragment extends BaseFragment {
         mThreadPool.execute(new Runnable() {
             @Override
             public void run() {
+                //尝试从本地缓存中读取新闻数据
                 String cache = LocalCacheUtils.getLocalCache(mUrl);
                 if (!TextUtils.isEmpty(cache)) {
+                    //成功从缓存中读取到数据 将其转换为新闻列表对象
                     mNewsListNormalBeanList = DataParse.NewsList(cache, tid);
                     if (mNewsListNormalBeanList != null) {
                         LogUtils.d(TAG, "读取缓存成功");
+                        //表示已展示缓存数据
                         isShowCache = true;
+                        //通知展示缓存数据
                         Message message = mHandler.obtainMessage();
                         message.what = HANDLER_SHOW_NEWS;
+                        //使用 Handler 发送一条消息（HANDLER_SHOW_NEWS）给主线程，通知主线程展示新闻数据
                         mHandler.sendMessage(message);
                     } else {
                         isShowCache = false;
                     }
                 }
+                //检查是否需要联网刷新
                 if (!isLastNews(tid) || TextUtils.isEmpty(cache)) {
                     // 先判断当前缓存时间是否超过3个小时，超过则联网刷新
                     if (NetWorkUtil.isNetworkConnected(getActivity())) {
@@ -203,25 +209,33 @@ public class NewsListFragment extends BaseFragment {
         });
     }
 
+    //请求网络数据
     public void requestData() {
-
 //        http://c.m.163.com/nc/article/list/T1467284926140/0-20.html
 //        http://c.m.163.com/nc/article/list/T1348647909107/0-20.html
+        //确保当前没有处于联网刷新状态，以免重复发起请求
         if (!isConnectState) {
+            //启动一个新的线程来执行网络请求操作。
             mThreadPool.execute(new Runnable() {
                 @Override
                 public void run() {
+                    //表示当前处于联网刷新状态，以防止重复请求
                     isConnectState = true;
+                    //发起网络请求
                     HttpHelper.get(mUrl, new HttpCallbackListener() {
+//                        网络请求成功
                         @Override
                         public void onSuccess(String result) {
+                            //解析返回的网络数据，并将解析结果存储在 mNewsListNormalBeanList 中
                             mNewsListNormalBeanList = DataParse.NewsList(result, tid);
-
+                            //发送一条消息给主线程，通知主线程展示新闻数据（HANDLER_SHOW_NEWS）
                             if (mNewsListNormalBeanList != null) {
                                 Message message = mHandler.obtainMessage();
                                 message.what = HANDLER_SHOW_NEWS;
                                 mHandler.sendMessage(message);
+                                //保存最新刷新的时间戳
                                 saveUpdateTime(tid, System.currentTimeMillis());
+                                //将网络请求的结果缓存到本地
                                 saveCache(mUrl, result);
                             }
                             isConnectState = false;
@@ -231,7 +245,9 @@ public class NewsListFragment extends BaseFragment {
                         public void onError(Exception e) {
                             // 展示错误页面并尝试重新发出请求
                             LogUtils.e(TAG, "requestData" + e.toString());
+                            //发送一条错误消息给主线程，通知主线程显示错误信息（HANDLER_SHOW_ERROR）
                             sendErrorMessage(HANDLER_SHOW_ERROR, e.toString());
+                            //标记结束联网刷新状态：不管请求成功还是失败，最后都会将 isConnectState 标志重新设置为 false，表示联网刷新结束
                             isConnectState = false;
                         }
                     });
@@ -242,18 +258,28 @@ public class NewsListFragment extends BaseFragment {
     }
 
 
+    //显示新闻列表数据，并设置了点击事件处理逻
     @Override
     public void bindData() {
-        mNewsListAdapter = new NewsListAdapter(MyApplication.getContext(), (ArrayList<NewsListNormalBean>) mNewsListNormalBeanList);
+        //创建了一个名为 mNewsListAdapter 的自定义 NewsListAdapter 适配器，
+        // 并将 mNewsListNormalBeanList 数据集合传递给它。
+        // 这个适配器负责将新闻数据绑定到 RecyclerView 中。
+        mNewsListAdapter = new NewsListAdapter(MyApplication.getContext(),
+                (ArrayList<NewsListNormalBean>) mNewsListNormalBeanList);
+        //将创建的适配器与 RecyclerView 关联起来，实现数据显示。
         mIRecyclerView.setIAdapter(mNewsListAdapter);
-        // 设置Item点击跳转事件
+        // 设置Item点击跳转事件，当用户点击了列表中的某个条目时会触发 onItemClick
         mNewsListAdapter.setOnItemClickListener(new NewsListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                //获取点击的条目位置 position 对应的新闻数据
                 NewsListNormalBean newsListNormalBean = mNewsListNormalBeanList.get(position);
                 String photosetID = newsListNormalBean.getPhotosetID();
                 Intent intent;
+                // newsListNormalBean 中是否包含 photosetID
                 if (photosetID != null) {
+                    //如果包含，表示这是一个图片新闻，
+                    // 需要跳转到图片新闻详情页面。
                     intent = new Intent(getActivity(), PicDetailActivity.class);
                     String[] str = photosetID.split("\\|");
                     //  图片新闻文章所属的类目id
@@ -264,11 +290,12 @@ public class NewsListFragment extends BaseFragment {
                     intent.putExtra("SETID", setid);
                     LogUtils.d(TAG, "onItemClick: photosetID:" + photosetID);
                 } else {
+                    //如果不是图片新闻，启动新闻详细展示页面，
                     intent = new Intent(getActivity(), NewsDetailActivity.class);
+                    // 同时将新闻的唯一标识 DOCID 作为参数传递给目标页面。
                     intent.putExtra("DOCID", newsListNormalBean.getDocid());
-
                 }
-                //论坛、读书、漫画、态度公开课、云课堂 等栏目进入新闻详情页未处理
+                //通过 getActivity().startActivity(intent) 启动相应的新闻详情页面。
                 getActivity().startActivity(intent);
             }
         });
