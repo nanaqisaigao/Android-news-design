@@ -18,7 +18,6 @@ import cn.bproject.neteasynews.bean.VideoBean;
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by Bei on 2017/1/6.
  * 解析Json数据的工具类
  */
 

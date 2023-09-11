@@ -26,8 +26,17 @@ import cn.bproject.neteasynews.Utils.LogUtils;
 import cn.bproject.neteasynews.Utils.StringUtils;
 
 /**
- * Created by liaozhoubei on 2017/1/6.
  * HttpClient链接封装
+ *
+ * 无论是使用HttpGet，还是使用HttpPost，都必须通过如下3步来访问HTTP资源。
+ *
+ * 1.创建HttpGet或HttpPost对象，将要请求的URL通过构造方法传入HttpGet或HttpPost对象。
+ *
+ * 2.使用DefaultHttpClient类的execute方法发送HTTP GET或HTTP POST请求，并返回HttpResponse对象。
+ *
+ * 3.通过HttpResponse接口的getEntity方法返回响应信息，并进行相应的处理。
+ *
+ * 如果使用HttpPost方法提交HTTP POST请求，则需要使用HttpPost类的setEntity方法设置请求参数。参数则必须用NameValuePair[]数组存储。
  */
 @SuppressWarnings("deprecated")
 public class HttpHelper {

@@ -1,7 +1,6 @@
 package cn.bproject.neteasynews.http;
 
 /**
- * Created by Bei on 2017/1/6.
  * 根据网络返回的状态码返回相应的状态
  */
 
