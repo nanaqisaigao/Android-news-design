@@ -16,49 +16,26 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-/**
- * HTTP（HyperText Transfer Protocol：超文本传输协议）是一种用于分布式、协作式和超媒体信息系统的应用层协议。 简单来说就是一种发布和接收 HTML 页面的方法，被用于在 Web 浏览器和网站服务器之间传递信息。
- *
- * HTTP 默认工作在 TCP 协议 80 端口，用户访问网站 http:// 打头的都是标准 HTTP 服务。
- *
- * HTTP 协议以明文方式发送内容，不提供任何方式的数据加密，如果攻击者截取了Web浏览器和网站服务器之间的传输报文，就可以直接读懂其中的信息，因此，HTTP协议不适合传输一些敏感信息，比如：信用卡号、密码等支付信息。
- *
- * HTTPS（Hypertext Transfer Protocol Secure：超文本传输安全协议）是一种透过计算机网络进行安全通信的传输协议。HTTPS 经由 HTTP 进行通信，但利用 SSL/TLS 来加密数据包。HTTPS 开发的主要目的，是提供对网站服务器的身份认证，保护交换数据的隐私与完整性。
- *
- * HTTPS 默认工作在 TCP 协议443端口，它的工作流程一般如以下方式：
- *
- * 1、TCP 三次同步握手
- * 2、客户端验证服务器数字证书
- * 3、DH 算法协商对称加密算法的密钥、hash 算法的密钥
- * 4、SSL 安全加密隧道协商完成
- * 5、网页以加密的方式传输，用协商的对称加密算法和密钥加密，保证数据机密性；用协商的hash算法进行数据完整性保护，保证数据不被篡改。
- *
- *
- * 执行HTTP请求
- *
-*/
 public class HttpClientFactory {
-	/** http请求最大并发连接数 ，即同时可以执行的最大HTTP请求数量*/
+	/** http请求最大并发连接数 */
 	private static final int MAX_CONNECTIONS = 10;
-	/** 超时时间。表示如果一个HTTP请求在10秒内没有完成，它将会超时 */
+	/** 超时时间 */
 	private static final int TIMEOUT = 10 * 1000;
-	/** 缓存大小 ，8 * 1024字节，即8KB*/
-	private static final int SOCKET_BUFFER_SIZE = 8 * 1024;
+	/** 缓存大小 */
+	private static final int SOCKET_BUFFER_SIZE = 8 * 1024; // 8KB
 
-	public static DefaultHttpClient create(boolean isHttps) {//是否支持HTTPS协议
-//		HTTPParams对象包含了一系列的HTTP连接参数的配置，如连接超时时间、Socket超时时间、缓存大小等
+	public static DefaultHttpClient create(boolean isHttps) {
 		HttpParams params = createHttpParams();
 		DefaultHttpClient httpClient = null;
-		if (isHttps) {//支持http与https 进行HTTPS的相关配置
-			//  注册支持的协议
+		if (isHttps) {
+			// 支持http与https
 			SchemeRegistry schemeRegistry = new SchemeRegistry();
 			schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
 			schemeRegistry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-			// ThreadSafeClientConnManager线程安全管理类 用于线程安全地管理连接
+			// ThreadSafeClientConnManager线程安全管理类
 			ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
 			httpClient = new DefaultHttpClient(cm, params);
 		} else {
-			//如果 isHttps 为 false，表示只支持HTTP协议，不进行HTTPS相关的配置。
 			httpClient = new DefaultHttpClient(params);
 		}
 		return httpClient;

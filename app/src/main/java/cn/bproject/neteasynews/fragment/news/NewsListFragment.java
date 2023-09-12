@@ -111,7 +111,6 @@ public class NewsListFragment extends BaseFragment {
 
 
 //从外部往Fragment中传参数的方法   将数据传递给新的 Fragment 实例
-//用这种方式来创建 Fragment 并向其传递参数，以便在 Fragment 内部使用这些参数进行特定的操作和数据加载。
     public static NewsListFragment newInstance(String tid) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY, tid);
@@ -325,15 +324,12 @@ public class NewsListFragment extends BaseFragment {
 
     // 下拉刷新
     public void DownToRefresh() {
-        //如果不在联网刷新状态，就可以执行下拉刷新操作
         if (!isConnectState) {
-            //构建刷新请求 URL  0 表示刷新的起始位置
             mUrl = Api.CommonUrl + tid + "/" + 0 + Api.endUrl;
             mThreadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    isConnectState = true;//表示当前正在联网刷新
-                    //发起 HTTP GET 请求 返回获得资源的字符串
+                    isConnectState = true;
                     HttpHelper.get(mUrl, new HttpCallbackListener() {
                         @Override
                         public void onSuccess(String result) {
@@ -341,11 +337,8 @@ public class NewsListFragment extends BaseFragment {
                                 Message message = mHandler.obtainMessage();
                                 message.what = HANDLER_SHOW_REFRESH_LOADMORE;
                                 message.obj = result;
-                                //在主线程中处理和显示刷新后的数据
                                 mHandler.sendMessage(message);
-                                //保存最后刷新时间，以便后续的缓存和时间戳判断
                                 saveUpdateTime(tid, System.currentTimeMillis());
-                                //缓存刷新后的新闻数据，以便后续的离线浏览。
                                 saveCache(mUrl, result);
                             }
                         }
@@ -365,19 +358,16 @@ public class NewsListFragment extends BaseFragment {
     public void PullUpToRefresh() {
         if (!isConnectState) {
             isConnectState = true;
-            //显示一个加载中的动画或文本
             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
             mStartIndex += 20;
             mUrl = Api.CommonUrl + tid + "/" + mStartIndex + Api.endUrl;
             mThreadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    //返回获得资源的字符串
                     HttpHelper.get(mUrl, new HttpCallbackListener() {
                         @Override
                         public void onSuccess(String result) {
                             LogUtils.d(TAG, "setOnLoadMoreListener: " + result);
-                            //表示这不是下拉刷新。
                             isPullRefresh = false;
                             Message message = mHandler.obtainMessage();
                             message.what = HANDLER_SHOW_REFRESH_LOADMORE;
