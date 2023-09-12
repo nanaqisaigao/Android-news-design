@@ -22,20 +22,29 @@ import java.util.List;
 import cn.bproject.neteasynews.R;
 import cn.bproject.neteasynews.Utils.ListDataSave;
 
-
+/**
+ * 主要用于频道管理界面的展示和数据操作。
+ * 它包括初始化界面元素、管理用户选择的频道、编辑频道位置等功能。
+ * 此外，它还根据用户的操作，将相应的数据保存并返回给上一个 Activity。
+ * */
 public class ChannelManagerActivity extends BaseActivity implements ChannelAdapter.ChannelItemClickListener{
 
-    private RecyclerView mRecyclerView;
-    private ChannelAdapter mRecyclerAdapter;
-    private List<ProjectChannelBean> mMyChannelList;
-    private List<ProjectChannelBean> mRecChannelList;
+    private RecyclerView mRecyclerView;//用于显示频道列表
+    private ChannelAdapter mRecyclerAdapter;//管理频道的适配器。
+    private List<ProjectChannelBean> mMyChannelList;//存储用户选择的频道列表。
+    private List<ProjectChannelBean> mRecChannelList;//储更多频道的列表。
     private Context context;
-    private int tabposition;
-    private ListDataSave listDataSave;
+    private int tabposition;//标签的位置
+    private ListDataSave listDataSave;//保存数据的工具类
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       /* 获取意图中的数据，主要是 tabposition。
+        初始化工具栏（Toolbar）。
+        初始化 RecyclerView 的布局和装饰。
+        调用 initData() 方法初始化数据。
+        创建并设置 ChannelAdapter，然后将其绑定到 RecyclerView。*/
         setContentView(R.layout.activity_channel_manager);
         getIntentData();
         context = this;
@@ -80,6 +89,13 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelAdapt
 
     /**
      * 初始化数据
+     * 初始化 mMyChannelList，这是用户选择的频道列表。
+     * 从数据存储中获取 myChannel 数据，这是用户已选频道的列表。
+     * 对列表中的每个频道进行处理：
+     * 如果是当前浏览的 tab 标签，将其标记为默认项。
+     * 否则，根据位置判断是否可编辑移动，设置对应的 tabType。
+     * 初始化 mRecChannelList，这是更多频道的列表。
+     * 从数据存储中获取 moreChannel 数据，这是更多频道的列表。
      */
     private void initData() {
         mMyChannelList = new ArrayList<>();
@@ -112,7 +128,8 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelAdapt
 
     @Override
     protected void onPause() {
-
+      /*  在 onPause 方法中，将当前模式设置为不可编辑状态（编辑状态用于用户移动频道位置）。
+        将 mMyChannelList 和 mRecChannelList 中的数据保存到数据存储中。*/
         Iterator<ProjectChannelBean> iterator = mMyChannelList.iterator();
         while (iterator.hasNext()){
             ProjectChannelBean projectChannelBean = iterator.next();
@@ -127,6 +144,11 @@ public class ChannelManagerActivity extends BaseActivity implements ChannelAdapt
 
     @Override
     public void finish() {
+ /*       在 finish 方法中，取消编辑模式，即退出编辑状态。
+        遍历 mMyChannelList，查找当前浏览的 tab 标签位置，并记录到 tabposition。
+        创建一个意图，将 tabposition 作为附加数据放入意图中。
+        使用 setResult 设置返回的结果代码和意图。
+        最后调用 super.finish() 完成 Activity 的销毁。*/
         mRecyclerAdapter.doCancelEditMode(mRecyclerView);
 
         for (int i = 0; i < mMyChannelList.size(); i ++) {

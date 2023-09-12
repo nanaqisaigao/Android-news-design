@@ -30,7 +30,7 @@ import cn.bproject.neteasynews.http.HttpCallbackListener;
 import cn.bproject.neteasynews.http.HttpHelper;
 
 /**
- * Created by Bei on 2016/12/31.
+ *
  */
 
 public class PicDetailActivity extends BaseActivity implements DefineView {

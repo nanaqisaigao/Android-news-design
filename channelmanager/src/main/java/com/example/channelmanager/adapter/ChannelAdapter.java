@@ -36,7 +36,7 @@ import com.example.channelmanager.base.ItemDragVHListener;
 import java.util.List;
 
 /**
- * Created by goach on 2016/9/28.
+ *
  */
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHolder> implements
